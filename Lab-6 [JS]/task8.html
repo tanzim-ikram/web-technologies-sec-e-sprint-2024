@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 8</title>
+</head>
+
+<body>
+    <table border="1" cellpadding="10" cellspacing="0" align="center" width="30%">
+        <tr>
+            <th colspan="3">PERSONAL PROFILE</th>
+        </tr>
+        <tr>
+            <td>
+                Name
+            </td>
+            <td>
+                <input type="text" id="name">
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>
+                Email
+            </td>
+            <td>
+                <input type="text" id="mail">
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>
+                Gender
+            </td>
+            <td>
+                <input type="radio" name="gender" id="male"> Male
+                <input type="radio" name="gender" id="female"> Female
+                <input type="radio" name="gender" id="other"> Other
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>
+                Date of Birth
+            </td>
+            <td>
+                <input type="text" size="2" id="day"> / <input type="text" size="2" id="month"> / <input type="text" size="4" id="year">
+                <i>(dd/mm/yyyy)</i>
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>
+                Blood Group
+            </td>
+            <td>
+                <select id="Blood">
+                    <option value="option0">Select Blood Group</option>
+                    <option value="A+">A+</option>
+                    <option value="B+">B+</option>
+                    <option value="O+">O+</option>
+                </select>
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>
+                Degree
+            </td>
+            <td>
+                <input type="checkbox" id="SSC"> SSC
+                <input type="checkbox" id="HSC"> HSC
+                <input type="checkbox" id="BR"> BSc.
+                <input type="checkbox" id="MR"> MSc.
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>
+                Photo
+            </td>
+            <td>
+                <input type="file" id="pictureInput">
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <th colspan="3" height="20px"><span id="message" style="color: red;"></span></th>
+        </tr>
+        <tr>
+            <th colspan="3" align="right">
+                <input type="button" onclick="validateForm()" value="Submit" />
+                &nbsp;
+                <input type="reset" name="" value="Reset" />
+            </th>
+        </tr>
+    </table>
+    <script>
+        function checkName() {
+            let name = document.getElementById('name').value;
+
+            if (!name) {
+                document.getElementById('message').innerHTML = "Name cannot be empty";
+                return false;
+            }
+            let nameLen = name.split(' ');
+            if (nameLen.length < 2) {
+                document.getElementById('message').innerHTML = "Name has to contain at least two words";
+                return false;
+            }
+            if (checkFirstChar(name[0])) { }
+            else {
+                document.getElementById('message').innerHTML = "Name must start with a letter";
+                return false;
+            }
+            for (let i = 0; i < name.length; i++) {
+                if (checkChar(name[i])) { }
+                else {
+                    document.getElementById('message').innerHTML = "Name can only contain a-z or A-Z or dot or dash";
+                    return false;
+                }
+            }
+            document.getElementById('message').innerHTML = "";
+            return true;
+        }
+        function checkChar(ch) {
+            if ((ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z') || ch == '.' || ch == '_' || ch == ' ') return true;
+        }
+        function checkFirstChar(ch) {
+            if ((ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z')) return true;
+        }
+
+        function checkMail() {
+            let mail = document.getElementById('mail').value;
+            let atPos = mail.indexOf('@');
+            let dotPos = mail.lastIndexOf('.');
+
+            if (!mail) document.getElementById('message').innerHTML = "Email cannot be empty";
+            else if (atPos === -1 || atPos === 0 || dotPos === -1 || dotPos <= atPos + 1 || dotPos === mail.length - 1) {
+                document.getElementById('message').innerHTML = "Invalid email address";
+            } else {
+                document.getElementById('message').innerHTML = "";
+            }
+        }
+
+        function checkGender() {
+            let isMaleChecked = document.getElementById("male").checked;
+            let isFemaleChecked = document.getElementById("female").checked;
+            let isOtherChecked = document.getElementById("other").checked;
+
+            if (!isMaleChecked && !isFemaleChecked && !isOtherChecked) document.getElementById('message').innerHTML = "At least one option must be selected";
+            else document.getElementById('message').innerHTML = "";
+        }
+
+        function checkDate() {
+            let day = document.getElementById("day").value;
+            let month = document.getElementById("month").value;
+            let year = document.getElementById("year").value;
+
+            if (!day || !month || !year) {
+                document.getElementById('message').innerHTML = "Fields can not be empty";
+                return false;
+            }
+            for (let i = 0; i < day.length; i++) {
+                if (checkChar(day[i])) { }
+                else {
+                    document.getElementById('message').innerHTML = "Invalid day";
+                    return false;
+                }
+            }
+            for (let i = 0; i < month.length; i++) {
+                if (checkChar(month[i])) { }
+                else {
+                    document.getElementById('message').innerHTML = "Invalid month";
+                    return false;
+                }
+            }
+            for (let i = 0; i < year.length; i++) {
+                if (checkChar(year[i])) { }
+                else {
+                    document.getElementById('message').innerHTML = "Invalid year";
+                    return false;
+                }
+            }
+
+            if (day > 31 || day < 1 || day === "") {
+                document.getElementById('message').innerHTML = "Invalid day";
+                return false;
+            }
+
+            else if (month > 12 || month < 1 || month === "") {
+                document.getElementById('message').innerHTML = "Invalid month";
+                return false;
+            }
+
+            else if (year.length !== 4 || year === "") {
+                document.getElementById('message').innerHTML = "Invalid year";
+                return false;
+            }
+            document.getElementById('message').innerHTML = "";
+            return true;
+        }
+        function checkChar(ch) {
+            if (ch >= '0' && ch <= '9') return true;
+        }
+
+        function checkSelection() {
+            let sscChecked = document.getElementById("SSC").checked;
+            let hscChecked = document.getElementById("HSC").checked;
+            let brChecked = document.getElementById("BR").checked;
+            let mrChecked = document.getElementById("MR").checked;
+
+            if (!sscChecked && !hscChecked && !brChecked && !mrChecked) {
+                document.getElementById('message').innerHTML = "Please select at least one degree";
+                return false;
+            } else {
+                document.getElementById('message').innerHTML = "";
+                return true;
+            }
+        }
+
+        function checkBG() {
+            let selectedOption = document.getElementById("Blood").value;
+
+            if (selectedOption === "option0") {
+                document.getElementById('message').innerHTML = "Please select a blood group";
+                return false;
+            } else {
+                document.getElementById('message').innerHTML = "";
+                return true;
+            }
+        }
+
+        function validateForm() {
+            if (
+                checkName() &&
+                checkMail() &&
+                checkGender() &&
+                checkDate() &&
+                checkSelection() &&
+                checkBG()
+            ) {
+                let userIdInput = document.getElementById("userIdInput").value;
+                let pictureInput = document.getElementById("pictureInput").value;
+
+                if (!userIdInput || isNaN(parseInt(userIdInput)) || parseInt(userIdInput) <= 0) {
+                    document.getElementById('message').innerHTML = "User ID cannot be empty and must be a positive number";
+                    return;
+                }
+
+                if (!pictureInput) {
+                    document.getElementById('message').innerHTML = "Picture cannot be empty";
+                    return;
+                }
+
+                document.getElementById('message').innerHTML = "Form is validated and can be submitted!";
+            }
+        }
+    </script>
+</body>
+
+</html>
